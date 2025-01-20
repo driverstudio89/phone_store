@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -30,10 +31,9 @@ public class AddProductDto {
     @Size(min = 3, max = 20)
     private int quantity;
 
-    @Size(min = 3, max = 20)
-    private String specification;
+    private String specifications;
 
-    @Size(min = 3, max = 200)
-    private String picture;
+//    @Size(min = 3, max = 200)
+//    private String picture;
 
 }

@@ -7,6 +7,7 @@ import com.exercise.phone_store.web.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper modelMapper;
 
     @Override
-    public String addProduct(AddProductDto addProductDto) {
+    public String addProduct(AddProductDto addProductDto, MultipartFile[] pictures) {
         Optional<Product> byModel = productRepository.findByModel(addProductDto.getModel());
 
         if (byModel.isPresent()) {
