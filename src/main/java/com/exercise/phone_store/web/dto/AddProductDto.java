@@ -1,39 +1,31 @@
 package com.exercise.phone_store.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class AddProductDto {
 
-    @NotBlank
-    @Size(min = 3, max = 20)
+    @NotBlank(message = "you need to enter make")
+    @Size(min = 2, max = 20, message = "make length is between 2 and 20 characters")
     private String make;
 
-    @NotBlank
-    @Size(min = 2, max = 20)
+    @NotBlank(message = "you need to enter model")
+    @Size(min = 2, max = 20, message = "model length is between 2 and 20 characters")
     private String model;
 
-    @NotBlank
-    @PositiveOrZero
-    @Size(min = 3, max = 20)
+    @NotNull(message = "price is required")
+    @PositiveOrZero(message = "price need to be positive number")
     private double price;
 
-    @NotBlank
-    @PositiveOrZero
-    @Size(min = 3, max = 20)
+    @NotNull(message = "quantity is required")
+    @PositiveOrZero(message = "quantity need to be positive number")
     private int quantity;
 
     private String specifications;
-
-//    @Size(min = 3, max = 200)
-//    private String picture;
 
 }

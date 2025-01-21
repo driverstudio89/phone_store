@@ -24,14 +24,8 @@ public class ProductController {
     @PostMapping(value = "/product/add-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> addProduct(
             @RequestPart(required = false) MultipartFile[] pictures,
-            @Valid @RequestPart(required = false) String inputJson ) throws JsonProcessingException {
-        System.out.println();
-        AddProductDto addProductDto = util.convertToAddProductDto(inputJson);
-        System.out.println();
+            @RequestPart(required = false) @Valid AddProductDto addProductDto ){
         return ResponseEntity.ok(productService.addProduct(addProductDto, pictures));
     }
-
-
-
 
 }
