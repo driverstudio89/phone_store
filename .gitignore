@@ -20,6 +20,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+gradlew
+gradlew.bat
 .idea
 *.iws
 *.iml
