@@ -13,11 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRegisterDto {
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "need to enter email")
+    @Email(message = "need to enter valid email")
     private String email;
 
-    @NotNull
-    @Size(min = 5, max = 30)
+    @NotNull(message = "need to enter password")
+    @Size(min = 5, max = 30, message = "password should be between 5 and 30 characters")
     private String password;
 }
