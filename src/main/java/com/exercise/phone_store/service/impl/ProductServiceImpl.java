@@ -7,8 +7,13 @@ import com.exercise.phone_store.web.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,16 +24,31 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public String addProduct(AddProductDto addProductDto, MultipartFile[] pictures) {
         Optional<Product> byModel = productRepository.findByModel(addProductDto.getModel());
+        System.out.println();
 
         if (byModel.isPresent()) {
             return "Product with model "+ addProductDto.getModel() + " already exists";
         }
 
         Product product = modelMapper.map(addProductDto, Product.class);
+        product.setPictures(new ArrayList<>());
+
+        for (MultipartFile picture : pictures) {
+            String pictureName = picture.getOriginalFilename();
+            File file = new File("C:\\Users\\5600X\\Desktop\\project\\phone_store\\src\\main\\resources\\img\\product_image"+pictureName);
+            try {
+                picture.transferTo(file.toPath());
+                product.getPictures().add(file.getPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         productRepository.save(product);
 
-        return "Product " + addProductDto.getMake() + " " + addProductDto.getModel() + " added";
+        return product.toString();
     }
 }
