@@ -26,8 +26,4 @@ public class ProductController {
         return ResponseEntity.ok(productService.addProduct(addProductDto, pictures));
     }
 
-
-
-
-
 }
