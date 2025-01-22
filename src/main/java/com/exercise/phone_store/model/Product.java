@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "product")
 @Getter
@@ -25,9 +28,25 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @Column
-    private String pictures;
+    @ElementCollection
+    private List<String> pictures;
 
     @Column
     private String specifications;
+
+    public Product(List<String> pictures) {
+        this.pictures = pictures;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{\n" +
+                "id=" + id +
+                ",\n make='" + make + '\'' +
+                ",\n model='" + model + '\'' +
+                ",\n price=" + price +
+                ",\n pictures=" + pictures +
+                ",\n specifications='" + specifications + '\'' +
+                '}';
+    }
 }
