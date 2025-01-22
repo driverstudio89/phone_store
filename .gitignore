@@ -29,6 +29,7 @@ gradlew.bat
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+*/resources/img
 
 ### NetBeans ###
 /nbproject/private/
@@ -39,3 +40,4 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/img/
