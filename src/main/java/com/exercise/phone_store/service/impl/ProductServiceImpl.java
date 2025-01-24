@@ -4,6 +4,7 @@ import com.exercise.phone_store.data.ProductRepository;
 import com.exercise.phone_store.model.Product;
 import com.exercise.phone_store.service.ProductService;
 import com.exercise.phone_store.web.dto.AddProductDto;
+import com.exercise.phone_store.web.dto.ShowProductDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,15 @@ public class ProductServiceImpl implements ProductService {
         }
         productRepository.save(product);
         return product.toString();
+    }
+
+    @Transactional
+    @Override
+    public List<ShowProductDto> getAllProducts() {
+        List<Product> allProducts = productRepository.findAll();
+        List<ShowProductDto> allProductsDtoList = allProducts.stream()
+                .map(product -> modelMapper.map(product, ShowProductDto.class)).toList();
+        System.out.println();
+        return allProductsDtoList;
     }
 }
