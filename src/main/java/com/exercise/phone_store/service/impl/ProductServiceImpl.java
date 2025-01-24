@@ -3,7 +3,9 @@ package com.exercise.phone_store.service.impl;
 import com.exercise.phone_store.data.ProductRepository;
 import com.exercise.phone_store.model.Product;
 import com.exercise.phone_store.service.ProductService;
+import com.exercise.phone_store.service.exceptions.ObjectNotFoundException;
 import com.exercise.phone_store.web.dto.AddProductDto;
+import com.exercise.phone_store.web.dto.ShowProductDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +48,25 @@ public class ProductServiceImpl implements ProductService {
         }
         productRepository.save(product);
         return product.toString();
+    }
+
+    @Transactional
+    @Override
+    public List<ShowProductDto> getAllProducts() {
+        List<Product> allProducts = productRepository.findAll();
+        List<ShowProductDto> allProductsDtoList = allProducts.stream()
+                .map(product -> modelMapper.map(product, ShowProductDto.class)).toList();
+        return allProductsDtoList;
+    }
+
+    @Transactional
+    @Override
+    public ShowProductDto getProductById(UUID id) {
+
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty()) {
+            throw new ObjectNotFoundException("Product not found", id);
+        }
+        return modelMapper.map(optionalProduct.get(), ShowProductDto.class);
     }
 }
