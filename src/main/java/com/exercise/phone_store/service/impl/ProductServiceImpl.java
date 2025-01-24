@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (MultipartFile picture : pictures) {
             String pictureName = picture.getOriginalFilename();
-            File file = new File("C:\\Users\\5600X\\Desktop\\project\\phone_store\\src\\main\\resources\\img\\product_image"+pictureName);
+            File file = new File("src/main/resources/img/product_image"+pictureName);
             try {
                 picture.transferTo(file.toPath());
                 product.getPictures().add(file.getPath());
@@ -46,9 +46,7 @@ public class ProductServiceImpl implements ProductService {
                 throw new RuntimeException(e);
             }
         }
-
         productRepository.save(product);
-
         return product.toString();
     }
 }
