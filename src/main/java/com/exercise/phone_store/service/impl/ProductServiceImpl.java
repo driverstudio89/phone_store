@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -70,11 +72,21 @@ public class ProductServiceImpl implements ProductService {
         return modelMapper.map(optionalProduct.get(), ShowProductDto.class);
     }
 
+    @Transactional
     @Override
     public String deleteProductById(UUID id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isEmpty()) {
             throw new ObjectNotFoundException("Product not found", id);
+        }
+        List<String> pictures = optionalProduct.get().getPictures();
+        System.out.println();
+        for (String picture : pictures) {
+            try {
+                Files.deleteIfExists(Path.of(picture));
+            } catch (IOException e) {
+                throw new ObjectNotFoundException("Picture not found", picture);
+            }
         }
         productRepository.deleteById(id);
         return "Product " + optionalProduct.get().getMake() + optionalProduct.get().getModel()
