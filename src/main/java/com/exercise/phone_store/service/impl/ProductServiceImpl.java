@@ -69,4 +69,15 @@ public class ProductServiceImpl implements ProductService {
         }
         return modelMapper.map(optionalProduct.get(), ShowProductDto.class);
     }
+
+    @Override
+    public String deleteProductById(UUID id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty()) {
+            throw new ObjectNotFoundException("Product not found", id);
+        }
+        productRepository.deleteById(id);
+        return "Product " + optionalProduct.get().getMake() + optionalProduct.get().getModel()
+                + " deleted successfully";
+    }
 }
