@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> byModel = productRepository.findByModel(addProductDto.getModel());
 
         if (byModel.isPresent()) {
-            return "Product with model "+ addProductDto.getModel() + " already exists";
+            return "Product with model " + addProductDto.getModel() + " already exists";
         }
 
         Product product = modelMapper.map(addProductDto, Product.class);
@@ -88,8 +89,9 @@ public class ProductServiceImpl implements ProductService {
     private void mappingPictures(Product product, MultipartFile[] pictures) {
         for (MultipartFile picture : pictures) {
             String pictureName = picture.getOriginalFilename();
-            File file = new File("src/main/resources/img/product_image"+pictureName);
+            File file = new File("src/main/resources/img/product_image/" + pictureName);
             try {
+                Files.createDirectories(Paths.get("src/main/resources/img/product_image/"));
                 picture.transferTo(file.toPath());
                 product.getPictures().add(file.getPath());
             } catch (IOException e) {
