@@ -29,7 +29,7 @@ gradlew.bat
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-*/resources/img/*
+!**resources/img/product_image/*
 
 ### NetBeans ###
 /nbproject/private/

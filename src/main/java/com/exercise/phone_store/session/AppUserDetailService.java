@@ -19,9 +19,9 @@ public class AppUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).map(this::mapToUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("User with " + username + " not found!"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).map(this::mapToUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User with " + email + " not found!"));
     }
 
     private UserDetails mapToUserDetails(User user) {
@@ -33,7 +33,8 @@ public class AppUserDetailService implements UserDetailsService {
     }
 
     private List<GrantedAuthority> mapGrantedAuthorities(User user) {
-        return user.getRole().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
+        System.out.println();
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }
