@@ -2,9 +2,10 @@ package com.exercise.phone_store.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,6 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
 public class User {
 
     @Id
@@ -26,7 +26,7 @@ public class User {
     private String password;
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
-    private List<Role> role;
+    private List<Role> roles;
 
     @Column(unique = true)
     private String phoneNumber;
@@ -48,4 +48,8 @@ public class User {
 
     @Column
     private String zip;
+
+    public User() {
+        this.roles = new ArrayList<>();
+    }
 }

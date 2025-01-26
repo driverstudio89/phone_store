@@ -33,7 +33,7 @@ public class AppUserDetailService implements UserDetailsService {
     }
 
     private List<GrantedAuthority> mapGrantedAuthorities(User user) {
-        return user.getRole().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }
