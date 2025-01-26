@@ -29,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public String addProduct(AddProductDto addProductDto, MultipartFile[] pictures) {
         Optional<Product> byModel = productRepository.findByModel(addProductDto.getModel());
-        System.out.println();
 
         if (byModel.isPresent()) {
             return "Product with model "+ addProductDto.getModel() + " already exists";
@@ -37,17 +36,10 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = modelMapper.map(addProductDto, Product.class);
         product.setPictures(new ArrayList<>());
-
-        for (MultipartFile picture : pictures) {
-            String pictureName = picture.getOriginalFilename();
-            File file = new File("src/main/resources/img/product_image"+pictureName);
-            try {
-                picture.transferTo(file.toPath());
-                product.getPictures().add(file.getPath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (pictures == null || pictures.length == 0) {
+            pictures = new MultipartFile[0];
         }
+        mappingPictures(product, pictures);
         productRepository.save(product);
         return product.toString();
     }
@@ -92,4 +84,19 @@ public class ProductServiceImpl implements ProductService {
         return "Product " + optionalProduct.get().getMake() + optionalProduct.get().getModel()
                 + " deleted successfully";
     }
+
+    private void mappingPictures(Product product, MultipartFile[] pictures) {
+        for (MultipartFile picture : pictures) {
+            String pictureName = picture.getOriginalFilename();
+            File file = new File("src/main/resources/img/product_image"+pictureName);
+            try {
+                picture.transferTo(file.toPath());
+                product.getPictures().add(file.getPath());
+            } catch (IOException e) {
+                throw new ObjectNotFoundException("Picture not found", pictureName);
+            }
+        }
+    }
+
 }
+
