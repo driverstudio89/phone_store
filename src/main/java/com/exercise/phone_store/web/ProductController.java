@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class ProductController {
     private final Util util;
 
     @PostMapping(value = "/product/add-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> addProduct(
             @RequestPart(required = false) MultipartFile[] pictures,
             @RequestPart(required = false) @Valid AddProductDto addProductDto ){
@@ -39,6 +41,7 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/product-delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteProductById(@PathVariable UUID id) {
         return ResponseEntity.ok(productService.deleteProductById(id));
     }
