@@ -1,6 +1,5 @@
 package com.exercise.phone_store.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
@@ -20,7 +19,6 @@ public class Config {
     public Gson gson() {
         return new GsonBuilder().setPrettyPrinting().create();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

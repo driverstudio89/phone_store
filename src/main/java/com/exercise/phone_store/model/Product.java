@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,9 @@ public class Product {
 
     @ManyToOne(targetEntity = Category.class)
     private Category category;
+
+    @Column
+    private LocalDateTime created;
 
     public Product(List<String> pictures) {
         this.pictures = pictures;
