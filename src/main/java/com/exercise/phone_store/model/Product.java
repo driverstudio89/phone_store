@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,6 +34,9 @@ public class Product {
 
     @Column
     private String specifications;
+
+    @ManyToOne(targetEntity = Category.class)
+    private Category category;
 
     public Product(List<String> pictures) {
         this.pictures = pictures;
