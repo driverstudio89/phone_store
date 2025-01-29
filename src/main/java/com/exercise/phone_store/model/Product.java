@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,19 +35,11 @@ public class Product {
     @Column
     private String specifications;
 
+    @ManyToOne(targetEntity = Category.class)
+    private Category category;
+
     public Product(List<String> pictures) {
         this.pictures = pictures;
     }
 
-    @Override
-    public String toString() {
-        return "Product{\n" +
-                "id=" + id +
-                ",\n make='" + make + '\'' +
-                ",\n model='" + model + '\'' +
-                ",\n price=" + price +
-                ",\n pictures=" + pictures +
-                ",\n specifications='" + specifications + '\'' +
-                '}';
-    }
 }

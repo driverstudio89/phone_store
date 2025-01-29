@@ -9,10 +9,12 @@ import org.springframework.stereotype.Component;
 public class FirstInit implements CommandLineRunner {
     private final InitRoles initRoles;
     private final InitAdmin initAdmin;
+    private final InitCategories initCategories;
 
     @Override
     public void run(String... args) throws Exception {
         initRoles.run();
         initAdmin.run();
+        initCategories.run();
     }
 }

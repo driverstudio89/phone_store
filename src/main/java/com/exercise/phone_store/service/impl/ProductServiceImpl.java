@@ -1,11 +1,15 @@
 package com.exercise.phone_store.service.impl;
 
+import com.exercise.phone_store.data.CategoryRepository;
 import com.exercise.phone_store.data.ProductRepository;
+import com.exercise.phone_store.model.Category;
 import com.exercise.phone_store.model.Product;
+import com.exercise.phone_store.model.enums.CategoryType;
 import com.exercise.phone_store.service.ProductService;
 import com.exercise.phone_store.service.exceptions.ObjectNotFoundException;
 import com.exercise.phone_store.web.dto.AddProductDto;
 import com.exercise.phone_store.web.dto.ShowProductDto;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
+    private final Gson gson;
 
     @Override
     @Transactional
@@ -36,13 +42,23 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Product product = modelMapper.map(addProductDto, Product.class);
+
+        Optional<Category> byCategory = categoryRepository.
+                findByCategory(CategoryType.valueOf(addProductDto.getCategory().toUpperCase()));
+
+        product.setCategory(byCategory.orElseThrow(() -> new ObjectNotFoundException("Category not found",
+                addProductDto.getCategory())));
         product.setPictures(new ArrayList<>());
         if (pictures == null || pictures.length == 0) {
             pictures = new MultipartFile[0];
         }
         mappingPictures(product, pictures);
+
         productRepository.save(product);
-        return product.toString();
+
+        ShowProductDto showProductDto = modelMapper.map(product, ShowProductDto.class);
+        showProductDto.setCategory(product.getCategory().getCategory().toString());
+        return gson.toJson(showProductDto);
     }
 
     @Transactional
