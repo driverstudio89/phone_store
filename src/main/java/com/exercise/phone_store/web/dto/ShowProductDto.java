@@ -23,4 +23,6 @@ public class ShowProductDto {
     private List<String> pictures;
 
     private String specifications;
+
+    private String category;
 }

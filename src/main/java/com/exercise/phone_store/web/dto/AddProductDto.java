@@ -26,6 +26,11 @@ public class AddProductDto {
     @PositiveOrZero(message = "quantity need to be positive number")
     private int quantity;
 
+    @NotBlank(message = "you need to enter category")
+    @Size(min = 2, max = 20, message = "category length is between 2 and 20 characters")
+    private String category;
+
+    @Size(min = 2, max = 200, message = "specifications length is between 2 and 20 characters")
     private String specifications;
 
 }
