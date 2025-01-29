@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -48,6 +49,9 @@ public class ProductServiceImpl implements ProductService {
 
         product.setCategory(byCategory.orElseThrow(() -> new ObjectNotFoundException("Category not found",
                 addProductDto.getCategory())));
+
+        product.setCreated(LocalDateTime.now());
+
         product.setPictures(new ArrayList<>());
         if (pictures == null || pictures.length == 0) {
             pictures = new MultipartFile[0];
@@ -114,6 +118,17 @@ public class ProductServiceImpl implements ProductService {
                 throw new ObjectNotFoundException("Picture not found", pictureName);
             }
         }
+    }
+
+    @Transactional
+    @Override
+    public List<ShowProductDto> getNewestProducts() {
+        Optional<List<Product>> optionalProducts = productRepository.
+                findTop12ByCreatedAfter(LocalDateTime.now().minusWeeks(1));
+        System.out.println();
+        return optionalProducts.map(products -> products.stream()
+                .map(product -> modelMapper.map(product, ShowProductDto.class))
+                .toList()).orElseGet(List::of);
     }
 
 }

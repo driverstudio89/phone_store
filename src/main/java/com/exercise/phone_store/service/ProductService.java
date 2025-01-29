@@ -15,4 +15,6 @@ public interface ProductService {
     ShowProductDto getProductById(UUID id);
 
     String deleteProductById(UUID id);
+
+    List<ShowProductDto> getNewestProducts();
 }
