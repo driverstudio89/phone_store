@@ -8,8 +8,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Role {
 
@@ -22,5 +20,23 @@ public class Role {
 
     public Role(UserRole role) {
         this.role = role;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Role setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public Role setRole(UserRole role) {
+        this.role = role;
+        return this;
     }
 }
