@@ -26,4 +26,7 @@
           uses: gradle/actions/setup-gradle@v4
 
         - name: Build Gradle
-          run: gradle build -s
+          run: gradle build -x test
+
+        - name: Test Gradle
+          run: gradle test -s
