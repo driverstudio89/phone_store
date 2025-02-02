@@ -2,7 +2,9 @@ package com.exercise.phone_store.service.impl;
 
 import com.exercise.phone_store.data.RoleRepository;
 import com.exercise.phone_store.data.UserRepository;
+import com.exercise.phone_store.model.Role;
 import com.exercise.phone_store.model.User;
+import com.exercise.phone_store.model.enums.UserRole;
 import com.exercise.phone_store.service.UserService;
 import com.exercise.phone_store.web.dto.UserRegisterDto;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +17,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,20 +53,40 @@ public class UserServiceImplTest {
         }
     }
 
+    private final User testUser = new User()
+            .setEmail(TEST_EMAIL)
+            .setPassword(TEST_PASSWORD)
+            .setRoles(List.of(
+                    new Role().setRole(UserRole.USER),
+                    new Role().setRole(UserRole.ADMIN)
+            ))
+            .setFirstName("User")
+            .setLastName("Userov")
+            .setPhoneNumber("0888888888")
+            .setCity("Sliven")
+            .setZip("8800")
+            .setAddress("ul. Street 11")
+            .setCountry("Bulgaria");
+
     @Test
     void testUserRegistrationSuccess() {
-
         UserRegisterDto userRegisterDto = createUserRegisterDto();
-
         userService.registerUser(userRegisterDto);
-
         verify(mockUserRepository).save(userCapture.capture());
-
         User actualUser = userCapture.getValue();
-
         Assertions.assertEquals(userRegisterDto.getEmail(), actualUser.getEmail());
         Assertions.assertEquals(userRegisterDto.getPassword() +
                 userRegisterDto.getPassword(), actualUser.getPassword());
+    }
+
+    @Test
+    void testUserRegistration_EmailAlreadyExists() {
+        UserRegisterDto userRegisterDto = createUserRegisterDto();
+        userService.registerUser(userRegisterDto);
+        when(mockUserRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(testUser));
+
+        Assertions.assertEquals("User with email " + TEST_EMAIL + " is already registered",
+                userService.registerUser(userRegisterDto));
     }
 
 
