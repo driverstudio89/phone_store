@@ -29,6 +29,4 @@
           run: gradle build
 
         - name: Test
-          run: |
-            chmod +x gradlew
-            ./gradlew test --stacktrace
+          run: gradle test
