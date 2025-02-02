@@ -93,7 +93,7 @@ public class UserServiceImplTest {
 
     private UserRegisterDto createUserRegisterDto() {
         UserRegisterDto userRegisterDto = new UserRegisterDto();
-        userRegisterDto.setEmail(TEST_EMAIL + "a");
+        userRegisterDto.setEmail(TEST_EMAIL);
         userRegisterDto.setPassword(TEST_PASSWORD);
 
         when(mockPasswordEncoder.encode(userRegisterDto.getPassword()))
