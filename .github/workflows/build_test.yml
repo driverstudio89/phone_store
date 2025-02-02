@@ -1,42 +1,31 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Build and Test
+  name: Build and Test
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  on:
+    push:
+      branches: [ "main" ]
+    pull_request:
+      branches: [ "main" ]
 
-jobs:
-  build:
+  jobs:
+    build:
 
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
 
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
 
-  - name: Setup Java
-    uses: actions/setup-java@v4
-    with:
-      java-version: '21'
-      distribution: 'temurin'
-  - uses: actions/setup-java@v4
-    with:
-      java-version: '21'
-      distribution: 'temurin'
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+            java-version: '21'
+            distribution: 'temurin'
 
-  - name: Setup Gradle
-    uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        - name: Setup Gradle
+          uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-  - name: Build with Gradle
-    run: ./gradlew -b ci.gradle package
-
+        - name: Build with Gradle
+          run: ./gradlew -b ci.gradle package
