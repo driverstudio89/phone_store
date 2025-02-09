@@ -3,6 +3,8 @@ build/
 /.idea/
 !**/src/main/**/build/
 !**/src/test/**/build/
+!**gradle/
+!.gradle/*
 
 ### STS ###
 .apt_generated
@@ -26,12 +28,14 @@ out/
 !**/src/test/**/out/
 !**resources/img/product_image/*
 
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
+
 
 ### VS Code ###
 .vscode/
