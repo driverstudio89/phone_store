@@ -9,6 +9,7 @@ import com.exercise.phone_store.service.ProductService;
 import com.exercise.phone_store.service.exceptions.ObjectNotFoundException;
 import com.exercise.phone_store.web.dto.AddProductDto;
 import com.exercise.phone_store.web.dto.ShowProductDto;
+import com.exercise.phone_store.web.dto.UpdateProductDto;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -131,5 +132,53 @@ public class ProductServiceImpl implements ProductService {
                 .toList()).orElseGet(List::of);
     }
 
+    @Override
+    @Transactional
+    public String updateProduct(UUID id, UpdateProductDto updateProductDto, MultipartFile[] pictures) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty()) {
+            throw new ObjectNotFoundException("Product not found", id);
+        }
+        Product product = optionalProduct.get();
+        product.setUpdated(LocalDateTime.now());
+
+        if (updateProductDto.getMake() != null) {
+            product.setMake(updateProductDto.getMake());
+        }
+
+        if (updateProductDto.getModel() != null) {
+            product.setModel(updateProductDto.getModel());
+        }
+
+        if (updateProductDto.getPrice() != null) {
+            product.setPrice(updateProductDto.getPrice());
+        }
+
+        if (updateProductDto.getQuantity() != null) {
+            product.setQuantity(updateProductDto.getQuantity());
+        }
+
+        if (updateProductDto.getSpecifications() != null) {
+            product.setSpecifications(updateProductDto.getSpecifications());
+        }
+
+        if (updateProductDto.getCategory() != null) {
+            Optional<Category> byCategory = categoryRepository.
+                    findByCategory(CategoryType.valueOf(updateProductDto.getCategory().toUpperCase()));
+
+            product.setCategory(byCategory.orElseThrow(() -> new ObjectNotFoundException("Category not found",
+                    updateProductDto.getCategory())));
+        }
+
+        if (pictures != null && pictures.length > 0) {
+            mappingPictures(product, pictures);
+        }
+
+        productRepository.save(product);
+
+        ShowProductDto showProductDto = modelMapper.map(product, ShowProductDto.class);
+        showProductDto.setCategory(product.getCategory().getCategory().toString());
+        return gson.toJson(showProductDto);
+    }
 }
 
