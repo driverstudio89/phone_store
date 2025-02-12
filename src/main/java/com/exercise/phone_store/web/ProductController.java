@@ -4,6 +4,7 @@ import com.exercise.phone_store.service.ProductService;
 import com.exercise.phone_store.service.util.Util;
 import com.exercise.phone_store.web.dto.AddProductDto;
 import com.exercise.phone_store.web.dto.ShowProductDto;
+import com.exercise.phone_store.web.dto.UpdateProductDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -46,4 +47,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.deleteProductById(id));
     }
 
+    @PutMapping(value = "/product-update/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<String> updateProduct(
+            @PathVariable UUID id,
+            @RequestPart(required = false) MultipartFile[] pictures,
+            @RequestPart(required = false) @Valid UpdateProductDto updateProductDto) {
+        return ResponseEntity.ok(productService.updateProduct(id, updateProductDto, pictures));
+    }
 }

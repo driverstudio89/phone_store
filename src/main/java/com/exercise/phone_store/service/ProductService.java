@@ -2,6 +2,8 @@ package com.exercise.phone_store.service;
 
 import com.exercise.phone_store.web.dto.AddProductDto;
 import com.exercise.phone_store.web.dto.ShowProductDto;
+import com.exercise.phone_store.web.dto.UpdateProductDto;
+import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,4 +19,7 @@ public interface ProductService {
     String deleteProductById(UUID id);
 
     List<ShowProductDto> getNewestProducts();
+
+
+    String updateProduct(UUID id, UpdateProductDto updateProductDto, MultipartFile[] pictures);
 }

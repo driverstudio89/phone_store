@@ -25,7 +25,10 @@ public class Product {
     private String model;
 
     @Column(nullable = false)
-    private double price;
+    private Double price;
+
+    @Column(nullable = false)
+    private Integer quantity;
 
     @ElementCollection
     private List<String> pictures;
@@ -38,6 +41,9 @@ public class Product {
 
     @Column
     private LocalDateTime created;
+
+    @Column
+    private LocalDateTime updated;
 
     public Product() {
     }
@@ -100,12 +106,21 @@ public class Product {
         return this;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public Product setPrice(double price) {
+    public Product setPrice(Double price) {
         this.price = price;
+        return this;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Product setQuantity(Integer quantity) {
+        this.quantity = quantity;
         return this;
     }
 
@@ -115,6 +130,15 @@ public class Product {
 
     public Product setSpecifications(String specifications) {
         this.specifications = specifications;
+        return this;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public Product setUpdated(LocalDateTime updated) {
+        this.updated = updated;
         return this;
     }
 }
