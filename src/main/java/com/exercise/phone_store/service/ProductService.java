@@ -20,6 +20,7 @@ public interface ProductService {
 
     List<ShowProductDto> getNewestProducts();
 
-
     String updateProduct(UUID id, UpdateProductDto updateProductDto, MultipartFile[] pictures);
+
+    List<ShowProductDto> getProductsByCategory(String category);
 }
