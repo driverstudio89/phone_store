@@ -70,9 +70,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ShowProductDto> getAllProducts() {
         List<Product> allProducts = productRepository.findAll();
-        List<ShowProductDto> allProductsDtoList = allProducts.stream()
-                .map(product -> modelMapper.map(product, ShowProductDto.class)).toList();
-        return allProductsDtoList;
+        return allProducts.stream()
+                .map(product -> {
+                    ShowProductDto showProductDto = modelMapper.map(product, ShowProductDto.class);
+                    showProductDto.setCategory(product.getCategory().getCategory().toString());
+                    return showProductDto;
+                }).toList();
     }
 
     @Transactional
@@ -128,7 +131,11 @@ public class ProductServiceImpl implements ProductService {
                 findTop12ByCreatedAfter(LocalDateTime.now().minusWeeks(1));
         System.out.println();
         return optionalProducts.map(products -> products.stream()
-                .map(product -> modelMapper.map(product, ShowProductDto.class))
+                .map(product -> {
+                    ShowProductDto showProductDto = modelMapper.map(product, ShowProductDto.class);
+                    showProductDto.setCategory(product.getCategory().getCategory().toString());
+                    return showProductDto;
+                })
                 .toList()).orElseGet(List::of);
     }
 
@@ -179,6 +186,25 @@ public class ProductServiceImpl implements ProductService {
         ShowProductDto showProductDto = modelMapper.map(product, ShowProductDto.class);
         showProductDto.setCategory(product.getCategory().getCategory().toString());
         return gson.toJson(showProductDto);
+    }
+
+    @Override
+    @Transactional
+    public List<ShowProductDto> getProductsByCategory(String category) {
+
+        Optional<Category> optionalCategory = categoryRepository
+                .findByCategory(CategoryType.valueOf(category.toUpperCase()));
+        if (optionalCategory.isEmpty()) {
+            throw new ObjectNotFoundException("Category not found", category);
+        }
+        List<Product> products = productRepository.findAllByCategory(optionalCategory.get());
+
+        return products.stream()
+                .map(p -> {
+                    ShowProductDto showProductDto = modelMapper.map(p, ShowProductDto.class);
+                    showProductDto.setCategory(p.getCategory().getCategory().toString());
+                    return showProductDto;
+                }).toList();
     }
 }
 

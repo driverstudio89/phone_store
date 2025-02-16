@@ -1,10 +1,12 @@
 HELP.md
 build/
+.gradle
 /.idea/
 !**/src/main/**/build/
 !**/src/test/**/build/
 !**gradle/
 !.gradle/*
+/.gradle/
 */.gradle/
 !gradle/wrapper/gradle-wrapper.jar
 
@@ -43,4 +45,5 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/img/
+/.gradle/
 /.gradle/

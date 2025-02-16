@@ -1,7 +1,6 @@
 package com.exercise.phone_store.web;
 
 import com.exercise.phone_store.service.ProductService;
-import com.exercise.phone_store.service.util.Util;
 import com.exercise.phone_store.web.dto.AddProductDto;
 import com.exercise.phone_store.web.dto.ShowProductDto;
 import com.exercise.phone_store.web.dto.UpdateProductDto;
@@ -21,7 +20,6 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService productService;
-    private final Util util;
 
     @PostMapping(value = "/product/add-product", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,4 +53,10 @@ public class ProductController {
             @RequestPart(required = false) @Valid UpdateProductDto updateProductDto) {
         return ResponseEntity.ok(productService.updateProduct(id, updateProductDto, pictures));
     }
+
+    @GetMapping(value = "/products-category/{category}")
+    public ResponseEntity<List<ShowProductDto>> getAllProductsByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(productService.getProductsByCategory(category));
+    }
+
 }
